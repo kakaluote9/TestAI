@@ -1,0 +1,4 @@
+2025-06-19T17:03:20.975818,anonymous,关于单元测试的描述，以下哪项是正确的？,A,C,0
+2025-06-19T17:03:20.975818,anonymous,下面这段代码有什么问题？\ndef calculate_discount(price):\n    if price >= 100:\n        return price * 0.9\n    else if price >= 50:\n        return price * 0.95\n    else:\n        return price,x,else if 应该改为 elif，否则语法错误。,0
+2025-06-20T10:06:50.908945,卡卡,关于单元测试的描述，以下哪项是正确的？,B,C,0
+2025-06-20T10:06:50.908945,卡卡,下面这段代码有什么问题？\ndef calculate_discount(price):\n    if price >= 100:\n        return price * 0.9\n    else if price >= 50:\n        return price * 0.95\n    else:\n        return price,sqd,else if 应该改为 elif，否则语法错误。,0

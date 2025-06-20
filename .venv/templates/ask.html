@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active_page = "ask" %}
+
+{% block title %}知识问答{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <h1><i class="fas fa-question-circle"></i> 软件软件测试答疑</h1>
+        <p>向软件测试专家提问，获取专业解答</p>
+    </div>
+
+    <form method="post">
+        <div class="form-control">
+            <label>请输入您的问题：</label>
+            <textarea name="question" placeholder="例如：什么是黑盒测试？" required>{% if question %}{{ question }}{% endif %}</textarea>
+        </div>
+        <button type="submit" class="btn">
+            <i class="fas fa-paper-plane"></i> 提交问题
+        </button>
+    </form>
+
+    {% if response %}
+    <div class="response-card" style="margin-top: 35px; padding: 25px; border-radius: 12px; background: #f0f9ff; border-left: 4px solid var(--primary);">
+        <h3 style="margin-bottom: 15px; color: var(--primary);">
+            <i class="fas fa-robot"></i> AI小助理回答：
+        </h3>
+        <div style="line-height: 1.8; font-size: 1.05rem; color: var(--dark);">
+            {{ response | replace('\n', '<br>') | safe }}
+        </div>
+        
+        <div style="margin-top: 20px; padding: 12px; background: #e6f4ff; border-radius: 8px;">
+            <p style="font-size: 0.9rem; color: var(--gray);">
+                <i class="fas fa-info-circle"></i> 提示：本回答基于Ollama大模型生成，内容仅供参考
+            </p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

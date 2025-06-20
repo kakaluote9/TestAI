@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set active_page = "quiz" %}
+
+{% block title %}考核模式{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <h1><i class="fas fa-edit"></i> 测试考核</h1>
+        <p>考生: {{ user }} | 共 {{ questions|length }} 题</p>
+    </div>
+    
+    <form method="post">
+        <input type="hidden" name="user" value="{{ user }}">
+        
+        {% for q in questions %}
+        <div class="question-item" style="margin-bottom: 30px;">
+            <div class="question-content">
+                <b>问题 {{ loop.index }}：</b> {{ q.question }}
+            </div>
+            
+            {% if q.options %}
+            <div style="margin-top: 15px; padding: 15px; background: #f7f8fa; border-radius: 8px;">
+                {% for key, val in q.options.items() %}
+                <label style="display: block; margin-bottom: 10px; padding: 10px; border-radius: 6px; background: white; cursor: pointer;">
+                    <input type="radio" name="q{{ q.id }}" value="{{ key }}" required style="margin-right: 10px;">
+                    <span class="option-letter">{{ key }}.</span> {{ val }}
+                </label>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="form-control" style="margin-top: 15px;">
+                <label>请简要作答：</label>
+                <textarea name="q{{ q.id }}" rows="4" required></textarea>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <button type="submit" class="btn" style="padding: 16px 40px; font-size: 1.2rem;">
+                <i class="fas fa-paper-plane"></i> 提交答案
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

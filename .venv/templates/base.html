@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件测试培训系统 - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // 解决Pandas上传Excel依赖问题
+        function checkUploadDependencies() {
+            {% if config.EXCEL_DEPENDENCY_FIXED %}
+            return true;
+            {% else %}
+            alert("为了上传Excel文件，请确保安装OpenPyXL依赖：\n\npip install openpyxl");
+            return false;
+            {% endif %}
+        }
+    </script>
+</head>
+<body>
+    <!-- 导航栏 -->
+
+    <nav class="navbar" style="background: hwb(170 90% 7%); color: #ecf0f1;">
+    <!--<nav class="navbar" style="background: linear-gradient(90deg, #e3e8ec 0%, #914a50 100%);"> -->
+        <div class="container">
+            <a href="/" class="logo">
+                <i class="fas fa-code logo-icon"></i>
+                <span>软件测试培训系统</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> 主页
+                </a>
+                <a href="/ask" class="nav-link {% if active_page == 'ask' %}active{% endif %}">
+                    <i class="fas fa-question-circle"></i> 知识问答
+                </a>
+                <a href="/bank" class="nav-link {% if active_page == 'bank' %}active{% endif %}">
+                    <i class="fas fa-book"></i> 题库管理
+                </a>
+                <a href="/quiz" class="nav-link {% if active_page == 'quiz' %}active{% endif %}">
+                    <i class="fas fa-edit"></i> 考核模式
+                </a>
+                <a href="/history" class="nav-link {% if active_page == 'history' %}active{% endif %}">
+                    <i class="fas fa-history"></i> 成绩记录
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- 页脚 -->
+    <!-- <footer>  -->
+    <footer style="background: #34495e; color: #ecf0f1;">
+        <div class="container">
+            <p style="text-align: center; margin-top: 60px; color: var(--gray); padding: 30px 0;">
+                © 2025 软件测试培训系统 | Powered by Flask & Ollama | 
+                <a href="/upload" style="color: var(--primary-light);">Excel导入工具</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Excel导入{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <h1><i class="fas fa-file-excel"></i> 题库Excel导入</h1>
+        <p>通过Excel文件批量导入题目到题库</p>
+    </div>
+    
+    {% if config.EXCEL_DEPENDENCY_FIXED %}
+    <div class="form-control" style="background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; margin-bottom: 30px; border-radius: 8px;">
+        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+        <span style="margin-left: 10px;">Excel处理依赖已安装，您可以上传文件</span>
+    </div>
+    {% else %}
+    <div class="form-control" style="background: #fff1f1; border-left: 4px solid var(--danger); padding: 15px; margin-bottom: 30px; border-radius: 8px;">
+        <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+        <span style="margin-left: 10px;">
+            系统缺少Excel处理依赖！请安装OpenPyXL：
+            <code style="display: inline; background: #2d2d2d; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; margin: 0 5px;">
+                pip install openpyxl
+            </code>
+        </span>
+    </div>
+    {% endif %}
+    
+    <form action="/upload" method="post" enctype="multipart/form-data" {% if not config.EXCEL_DEPENDENCY_FIXED %}onsubmit="return checkUploadDependencies()"{% endif %}>
+        <div class="form-control">
+            <label>选择Excel文件：</label>
+            <div style="border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; position: relative;">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--primary-light);"></i>
+                <h3 style="margin: 15px 0; color: var(--primary);">拖放文件到此处或点击选择</h3>
+                <p style="color: var(--gray);">支持.xlsx格式文件，文件大小不超过5MB</p>
+                <input type="file" name="file" accept=".xlsx" required style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn" {% if not config.EXCEL_DEPENDENCY_FIXED %}disabled{% endif %}>
+            <i class="fas fa-upload"></i> 上传文件
+        </button>
+    </form>
+    
+    <div style="margin-top: 50px; background: #eff6ff; border-radius: 12px; padding: 25px;">
+        <h3><i class="fas fa-info-circle"></i> Excel文件格式要求</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+                <th style="border: 1px solid #cbd5e1; padding: 12px;">列名</th>
+                <th style="border: 1px solid #cbd5e1; padding: 12px;">数据类型</th>
+                <th style="border: 1px solid #cbd5e1; padding: 12px;">必填</th>
+                <th style="border: 1px solid #cbd5e1; padding: 12px;">示例</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">id</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">整数</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">是</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">1</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">question</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">文本</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">是</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">什么是黑盒测试？</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">options</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">JSON字符串</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">选择题必填</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">{"A": "选项A", "B": "选项B"}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">answer</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">文本</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">是</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">A</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">explanation</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">文本</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">否</td>
+                <td style="border: 1px solid #cbd5e1; padding: 12px;">因为黑盒测试不关注内部结构</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

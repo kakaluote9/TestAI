@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% set active_page = "bank" %}
+
+{% block title %}题库管理{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <h1><i class="fas fa-book"></i> 题库管理</h1>
+        <p>当前题库共有 {{ questions|length }} 道题目</p>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
+        <h3><i class="fas fa-plus-circle"></i> 添加新题目</h3>
+        <div>
+            <a href="/download/csv" class="btn btn-sm" style="margin-right: 10px;">
+                <i class="fas fa-file-csv"></i> 导出CSV
+            </a>
+            <a href="/download/pdf" class="btn btn-sm btn-secondary">
+                <i class="fas fa-file-pdf"></i> 导出PDF
+            </a>
+        </div>
+    </div>
+    
+    <form method="post" action="/add">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-control">
+                <label>题目内容：</label>
+                <textarea name="question" placeholder="请输入题目描述" required></textarea>
+            </div>
+            
+            <div class="form-control">
+                <label>选项（JSON格式）：</label>
+                <textarea name="options" placeholder='{"A": "选项A", "B": "选项B", "C": "选项C"}'></textarea>
+            </div>
+            
+            <div class="form-control">
+                <label>正确答案：</label>
+                <input name="answer" placeholder="例如：A" required>
+            </div>
+            
+            <div class="form-control">
+                <label>答案解析：</label>
+                <textarea name="explanation" placeholder="请解释为什么选择这个答案"></textarea>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn">
+            <i class="fas fa-plus"></i> 添加题目
+        </button>
+    </form>
+    
+    <div class="header" style="margin-top: 60px; margin-bottom: 10px;">
+        <h2><i class="fas fa-list"></i> 题目列表</h2>
+    </div>
+    
+    <div class="question-list">
+        {% for q in questions %}
+        <div class="question-item">
+            <div class="question-content">
+                {{ q.question }}
+            </div>
+            
+            <div class="question-meta">
+                {% if q.options %}
+                <div>选项数: {{ q.options | length }} | 类型: 选择题</div>
+                {% else %}
+                <div>类型: 简答题</div>
+                {% endif %}
+                <div>正确答案: {{ q.answer }}</div>
+            </div>
+            
+            <div class="actions">
+                <form method="post" action="/edit" style="display: inline;">
+                    <input type="hidden" name="id" value="{{ q.id }}">
+                    <button type="submit" class="btn btn-sm" style="background: var(--accent);">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                </form>
+                
+                <form method="post" action="/delete" onsubmit="return confirm('确定要删除这道题吗？');" style="display: inline;">
+                    <input type="hidden" name="id" value="{{ q.id }}">
+                    <button type="submit" class="btn btn-sm" style="background: var(--danger);">
+                        <i class="fas fa-trash-alt"></i> 删除
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
