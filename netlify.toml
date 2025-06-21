@@ -1,0 +1,9 @@
+[build]
+  command = "pip install -r requirements.txt && python app.py"
+  publish = "/"  # 明确发布根目录
+
+[functions]
+  directory = "functions"
+
+[[plugins]]
+  package = "@netlify/plugin-python"
